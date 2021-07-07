@@ -1,0 +1,7 @@
+classpath:
+  - ../swift-java
+  - ../swift-android
+  
+packages:
+  - module: Sources/FusionNFC_Android
+    
