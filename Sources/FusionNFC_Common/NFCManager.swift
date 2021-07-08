@@ -35,11 +35,43 @@ public enum SessionUsage {
 }
 
 public protocol NFCManagerProtocol {
+    /*
+     *  Creates and returns a new NFCManager object initialized with the Alert Message.
+     *  
+     *  Parameters:  alertMessage    	It targets only for iOS. 
+     */
     init(alertMessage: String)    
     
+    /*
+     * @property readingAvailable
+     *
+     * @discussion YES if device supports NFC tag reading.
+     */    
     static var readingAvailable: Bool { get }
+    
+    /*
+     * @method readTag:
+     *
+     * @param completion Returns the NFCMessage from read operation.  Successful read would return a valid NFCMessage objectl;
+     *                          read failure returns a nil NFCMessage.
+     *
+     * @discussion Reads NFC message from the tag.
+     */    
     func readTag(_ completion: @escaping (NFCMessage?) -> Void)
+    
+    /*
+     * @method writeTag:
+     *
+     * @param message  NFCMessage.
+     *
+     * @discussion Writes a NFC message to the tag.
+     */
     func writeTag(_ message: NFCMessage)
     
+    /*
+     * @method disableForegroundDispatch:
+     *
+     * @discussion It targets only for Android.
+     */    
     func disableForegroundDispatch()
 }
