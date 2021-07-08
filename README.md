@@ -83,11 +83,11 @@ Entitlements File
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.apple.developer.nfc.readersession.formats</key>
-	<array>
-		<string>NDEF</string>
-		<string>TAG</string>
-	</array>
+    <key>com.apple.developer.nfc.readersession.formats</key>
+    <array>
+        <string>NDEF</string>
+        <string>TAG</string>
+    </array>
 </dict>
 </plist>
 ```
@@ -151,46 +151,46 @@ Our demo app is available here [link](https://github.com/scade-platform/FusionEx
 Basic Usage
 -----------
 ```swift
-	...
+    ...
     var nfcManager: NFCManager?  
-  	// page adapter initialization
-  	override func load(_ path: String) {
-    	super.load(path)
+    // page adapter initialization
+    override func load(_ path: String) {
+        super.load(path)
 
-    	// initialize the NFCManager
-		nfcManager = NFCManager(alertMessage: "Hold your iPhone near an NFC tag.")
+        // initialize the NFCManager
+        nfcManager = NFCManager(alertMessage: "Hold your iPhone near an NFC tag.")
 
-		// connect the button action to read/write func
+        // connect the button action to read/write func
         self.readButton.onClick{_ in self.read()}
         self.writeButton.onClick{_ in self.write()}
 
         // Below code is only for Android
-	    self.page!.onExit.append(SCDWidgetsExitEventHandler{_ in
-	    	self.nfcManager?.disableForegroundDispatch()
+        self.page!.onExit.append(SCDWidgetsExitEventHandler{_ in
+            self.nfcManager?.disableForegroundDispatch()
         })
-  	}
+    }
   	
-  	// read func
-  	func read() {
-  		// read NFC Tag
+    // read func
+    func read() {
+        // read NFC Tag
         nfcManager?.readTag { message in
 
-        	// get url and text from NFCMessage
-        	guard let message = message else { return }
-        	if let uriRecord = message.uriRecord {
-        		self.urlLabel.text = "URL: \(uriRecord.url.absoluteString)"
-        	}
+            // get url and text from NFCMessage
+            guard let message = message else { return }
+            if let uriRecord = message.uriRecord {
+                self.urlLabel.text = "URL: \(uriRecord.url.absoluteString)"
+            }
           	
-          	if let textRecord = message.textRecord {
-          		self.descriptionLabel.text = "Description: \(textRecord.string)"	
-          	}			
+            if let textRecord = message.textRecord {
+                self.descriptionLabel.text = "Description: \(textRecord.string)"	
+            }			
         }
     }
 
     // write func
-  	func write() {
+    func write() {
 
-  		// prepare the NFCURIRecord from the URL
+        // prepare the NFCURIRecord from the URL
         var uriRecord: NFCURIRecord?
         if let url = URL(string: urlTextBox.text) {
             uriRecord = NFCURIRecord(url: url)
