@@ -39,7 +39,7 @@ let package = Package(
               .product(name: "AndroidOS", package: "Android", condition: .when(platforms: [.android])),
               .product(name: "AndroidNFC", package: "Android", condition: .when(platforms: [.android]))              
             ],
-            resources: [.copy("Generated/NFCReceiver.java")]         
+            resources: [.copy("Generated/FusionNFC_Android.java")]
         )
     ]
 )
