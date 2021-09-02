@@ -1,6 +1,6 @@
 package com.FusionNFC_Android;
 
-class NFCReceiver extends android.content.BroadcastReceiver {
+public class NFCReceiver extends android.content.BroadcastReceiver {
   private long _ptr;
   
   public void onReceive(android.content.Context context, android.content.Intent intent) {
