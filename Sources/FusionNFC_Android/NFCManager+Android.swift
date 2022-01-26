@@ -46,7 +46,7 @@ extension NFCManager: NFCManagerProtocol {
             return URL(string: "tel:\(url.absoluteString)")
             
         case .facetime:
-            return URL(string: "facetime://\(url.absoluteString)")
+            return url
             
         case .shortcut:
             let encodedShortcutID = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
