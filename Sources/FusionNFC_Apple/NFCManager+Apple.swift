@@ -39,26 +39,26 @@ extension NFCManager: NFCManagerProtocol {
         }
     }
     
-    func getStandardURL(urlType: URLType) -> URL? {
+    func getStandardURL(url: URL, urlType: URLType) -> URL? {
         switch urlType {
-        case .website(let webURL):
-            return URL(string: webURL)
+        case .website:
+            return url
             
-        case .email( let emailID):
-            return URL(string: "mailto:\(emailID)")
+        case .email:
+            return URL(string: "mailto:\(url.absoluteString)")
             
-        case .sms(let phoneNumber):
-            return URL(string: "sms:\(phoneNumber)")
+        case .sms:
+            return URL(string: "sms:\(url.absoluteString)")
             
-        case .phone(let phoneNumber):
-            return URL(string: "tel:\(phoneNumber)")
+        case .phone:
+            return URL(string: "tel:\(url.absoluteString)")
             
-        case .facetime(let faceTimeID):
-            return URL(string: "facetime://\(faceTimeID)")
+        case .facetime:
+            return URL(string: "facetime://\(url.absoluteString)")
             
-        case .shortcut(let shortcutID):
-            let encodedShortcutID = shortcutID.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-            return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? shortcutID)")
+        case .shortcut:
+            let encodedShortcutID = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? url.absoluteString)")
         }
     }
     
@@ -72,9 +72,9 @@ extension NFCManager: NFCManagerProtocol {
             var payloads: [NFCNDEFPayload] = []
             
             if var uriRecord = message.uriRecord {
-                if uriRecord.urlType != nil {
-                    uriRecord.url = getStandardURL(urlType: uriRecord.urlType!) ??  uriRecord.url
-                }            
+                 if uriRecord.urlType != nil {
+                    uriRecord.url = getStandardURL(url: uriRecord.url, urlType: uriRecord.urlType!) ??  uriRecord.url
+                }
                 if let uriPayload = NFCNDEFPayload.wellKnownTypeURIPayload(url: uriRecord.url) {
                     payloads.append(uriPayload)
                 }
