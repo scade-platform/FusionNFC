@@ -11,7 +11,7 @@ public struct NFCMessage {
 }
 
 public struct NFCURIRecord {
-    public let url: URL
+    public var url: URL
     public var urlType: URLType?
     
     public init(url: URL) {

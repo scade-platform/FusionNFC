@@ -31,9 +31,37 @@ extension NFCManager: NFCManagerProtocol {
 		enableNfcForegroundDispatch()
     }
     
+    public func getStandardURL(urlType: URLType) -> URL? {
+        switch urlType {
+        case .website(let webURL):
+            return URL(string: webURL)
+            
+        case .email( let emailID):
+            return URL(string: "mailto:\(emailID)")
+            
+        case .sms(let phoneNumber):
+            return URL(string: "sms:\(phoneNumber)")
+            
+        case .phone(let phoneNumber):
+            return URL(string: "tel:\(phoneNumber)")
+            
+        case .facetime(let faceTimeID):
+            return URL(string: "facetime://\(faceTimeID)")
+            
+        case .shortcut(let shortcutID):
+            let encodedShortcutID = shortcutID.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? shortcutID)")
+        }
+    }
+    
     public func writeTag(_ message: NFCMessage) {
     	disableNfcForegroundDispatch()
 		NFCReceiver.shared.usage = .write
+		if var uriRecord = message.uriRecord {
+		if uriRecord.urlType != nil {
+			uriRecord.url = getStandardURL(urlType: uriRecord.urlType!) ??  uriRecord.url
+		}			
+		}
 		NFCReceiver.shared.message = message
 		
 		enableNfcForegroundDispatch()
