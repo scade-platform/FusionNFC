@@ -58,9 +58,9 @@ extension NFCManager: NFCManagerProtocol {
     	disableNfcForegroundDispatch()
 		NFCReceiver.shared.usage = .write
 		if var uriRecord = message.uriRecord {
-		if uriRecord.urlType != nil {
+		  if uriRecord.urlType != nil {
 			uriRecord.url = getStandardURL(urlType: uriRecord.urlType!) ??  uriRecord.url
-		}			
+		  }			
 		}
 		NFCReceiver.shared.message = message
 		
