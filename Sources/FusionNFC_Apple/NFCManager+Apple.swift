@@ -71,7 +71,7 @@ extension NFCManager: NFCManagerProtocol {
             
             var payloads: [NFCNDEFPayload] = []
             
-            if let uriRecord = message.uriRecord {
+            if var uriRecord = message.uriRecord {
                 if uriRecord.urlType != nil {
                     uriRecord.url = getStandardURL(urlType: uriRecord.urlType!) ??  uriRecord.url
                 }            
