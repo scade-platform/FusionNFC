@@ -41,12 +41,12 @@ public enum SessionUsage {
 }
 
 public enum URLType {
-    case website(String)
-    case email(String)
-    case sms(String)
-    case phone(String)
-    case facetime(String)
-    case shortcut(String)
+    case website)
+    case email
+    case sms
+    case phone
+    case facetime
+    case shortcut
 }
 
 public protocol NFCManagerProtocol {
