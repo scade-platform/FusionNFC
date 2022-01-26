@@ -41,7 +41,7 @@ public enum SessionUsage {
 }
 
 public enum URLType {
-    case website)
+    case website
     case email
     case sms
     case phone
