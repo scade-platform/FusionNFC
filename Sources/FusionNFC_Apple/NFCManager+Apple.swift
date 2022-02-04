@@ -59,6 +59,9 @@ extension NFCManager: NFCManagerProtocol {
         case .shortcut:
             let encodedShortcutID = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
             return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? url.absoluteString)")
+		
+	case .default_text:
+      	    return url	
         }
     }
     
@@ -221,7 +224,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         var nfcTextRecord: NFCTextRecord?
         
         if !urls.isEmpty, let url = urls.first {
-            nfcURIRecord = NFCURIRecord(url: url)
+           nfcURIRecord = NFCURIRecord(url: url, urlType: self.getURLType(url: url))
         }
         
         var additionInfo: String? = nil
@@ -238,4 +241,34 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         
         return NFCMessage(uriRecord: nfcURIRecord, textRecord: nfcTextRecord)
     }
+	func getURLType(url: URL) -> URLType {
+    let urlStr = url.absoluteString
+
+    if urlStr.starts(with: "tel") {
+      return .phone
+    }
+
+    if urlStr.starts(with: "sms") {
+      return .sms
+    }
+
+    if urlStr.starts(with: "mailto") {
+      return .email
+    }
+
+    if urlStr.starts(with: "http") {
+      return .website
+    }
+
+    if urlStr.starts(with: "facetime") {
+      return .facetime
+    }
+
+    if urlStr.starts(with: "shortcut") {
+      return .shortcut
+    }
+
+    return .default_text
+  }
 }
+
