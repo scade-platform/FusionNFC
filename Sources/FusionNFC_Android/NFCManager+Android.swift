@@ -51,6 +51,9 @@ extension NFCManager: NFCManagerProtocol {
         case .shortcut:
             let encodedShortcutID = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
             return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? url.absoluteString)")
+		
+	case .default_text:
+      	    return url	
         }
     }
     
@@ -258,16 +261,49 @@ extension NFCURIRecord {
 		return nil
 	}
 	
-	static func parseAbsolute(_ record: NdefRecord) -> NFCURIRecord? {
-		let payload = record.getPayload()
-		let uintArray = payload.map { UInt8(bitPattern: $0) }
-        guard let urlStr = String(bytes: uintArray, encoding: .utf8),
-              let url = URL(string: urlStr) else {
-            return nil
-        }
-		
-		return NFCURIRecord(url: url)
-	}
+  	static func parseAbsolute(_ record: NdefRecord) -> NFCURIRecord? {
+    		let payload = record.getPayload()
+    		let uintArray = payload.map { UInt8(bitPattern: $0) }
+    		guard let urlStr = String(bytes: uintArray, encoding: .utf8),
+     		let url = URL(string: urlStr)
+    		else {
+      		return nil
+    		}
+
+    	return NFCURIRecord(url: url, urlType: NFCURIRecord.getURLType(url: url))
+  	}
+
+  	static func getURLType(url: URL) -> URLType {
+    		let urlStr = url.absoluteString
+
+  		  if urlStr.starts(with: "tel") {
+  		    return .phone
+   		 }
+
+  		  if urlStr.starts(with: "sms") {
+  		    return .sms
+  		 }
+
+  		  if urlStr.starts(with: "mailto") {
+  		    return .email
+  		  }
+
+  		  if urlStr.starts(with: "http") {
+   		   return .website
+  		  }
+
+ 		   if urlStr.starts(with: "duo") {
+		      return .facetime
+ 		   }
+
+		    if urlStr.starts(with: "shortcut") {
+ 		     return .shortcut
+  		  }
+
+   		 return .default_text
+ 	}
+
+	
 	
 	static func parseWellKnown(_ record: NdefRecord) -> NFCURIRecord? {
 		guard record.getType() == NdefRecord.RTD_URI else { return nil }
