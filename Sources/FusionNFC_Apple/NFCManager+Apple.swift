@@ -250,7 +250,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
     return NFCMessage(uriRecord: nfcURIRecord, textRecord: nfcTextRecord)
   }
 
-  static func getURLType(url: URL) -> URLType {
+  func getURLType(url: URL) -> URLType {
     let urlStr = url.absoluteString
 
     if urlStr.starts(with: "tel") {
