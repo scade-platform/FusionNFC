@@ -47,6 +47,7 @@ public enum URLType {
     case phone
     case facetime
     case shortcut
+    case default_text
 }
 
 public protocol NFCManagerProtocol {
