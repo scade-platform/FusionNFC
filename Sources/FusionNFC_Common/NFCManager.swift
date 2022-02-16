@@ -11,10 +11,16 @@ public struct NFCMessage {
 }
 
 public struct NFCURIRecord {
-    public let url: URL
+    public var url: URL
+    public var urlType: URLType?
     
     public init(url: URL) {
         self.url = url
+    }
+    
+    public init(url: URL, urlType: URLType) {
+        self.url = url
+        self.urlType = urlType
     }
 }
 
@@ -32,6 +38,16 @@ public enum SessionUsage {
     case none
     case read
     case write
+}
+
+public enum URLType {
+    case website
+    case email
+    case sms
+    case phone
+    case facetime
+    case shortcut
+    case default_text
 }
 
 public protocol NFCManagerProtocol {

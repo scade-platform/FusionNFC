@@ -39,6 +39,32 @@ extension NFCManager: NFCManagerProtocol {
         }
     }
     
+    func getStandardURL(url: URL, urlType: URLType) -> URL? {
+        switch urlType {
+        case .website:
+            return url
+            
+        case .email:
+            return URL(string: "mailto:\(url.absoluteString)")
+            
+        case .sms:
+            return URL(string: "sms:\(url.absoluteString)")
+            
+        case .phone:
+            return URL(string: "tel:\(url.absoluteString)")
+            
+        case .facetime:
+            return URL(string: "facetime://\(url.absoluteString)")
+            
+        case .shortcut:
+            let encodedShortcutID = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+            return URL(string: "shortcuts://run-shortcut?name=\(encodedShortcutID ?? url.absoluteString)")
+		
+	case .default_text:
+      	    return url	
+        }
+    }
+    
     public func writeTag(_ message: NFCMessage) {
         guard let session = readerSession else {
             return
@@ -48,7 +74,10 @@ extension NFCManager: NFCManagerProtocol {
             
             var payloads: [NFCNDEFPayload] = []
             
-            if let uriRecord = message.uriRecord {
+            if var uriRecord = message.uriRecord {
+                 if uriRecord.urlType != nil {
+                    uriRecord.url = getStandardURL(url: uriRecord.url, urlType: uriRecord.urlType!) ??  uriRecord.url
+                }
                 if let uriPayload = NFCNDEFPayload.wellKnownTypeURIPayload(url: uriRecord.url) {
                     payloads.append(uriPayload)
                 }
@@ -195,7 +224,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         var nfcTextRecord: NFCTextRecord?
         
         if !urls.isEmpty, let url = urls.first {
-            nfcURIRecord = NFCURIRecord(url: url)
+           nfcURIRecord = NFCURIRecord(url: url, urlType: self.getURLType(url: url))
         }
         
         var additionInfo: String? = nil
@@ -212,4 +241,34 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         
         return NFCMessage(uriRecord: nfcURIRecord, textRecord: nfcTextRecord)
     }
+	func getURLType(url: URL) -> URLType {
+    let urlStr = url.absoluteString
+
+    if urlStr.starts(with: "tel") {
+      return .phone
+    }
+
+    if urlStr.starts(with: "sms") {
+      return .sms
+    }
+
+    if urlStr.starts(with: "mailto") {
+      return .email
+    }
+
+    if urlStr.starts(with: "http") {
+      return .website
+    }
+
+    if urlStr.starts(with: "facetime") {
+      return .facetime
+    }
+
+    if urlStr.starts(with: "shortcut") {
+      return .shortcut
+    }
+
+    return .default_text
+  }
 }
+
