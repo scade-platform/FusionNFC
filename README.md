@@ -171,6 +171,8 @@ Basic Usage
     }
   	
     // read func
+    // urlType can be email, sms, phone, facetime, shortcut, website
+    
     func read() {
         // read NFC Tag
         nfcManager?.readTag { message in
@@ -179,21 +181,27 @@ Basic Usage
             guard let message = message else { return }
             if let uriRecord = message.uriRecord {
                 self.urlLabel.text = "URL: \(uriRecord.url.absoluteString)"
+                if let urlType = uriRecord.urlType {
+                	// get the urlType of the NFCMessage
+                }
             }
           	
             if let textRecord = message.textRecord {
                 self.descriptionLabel.text = "Description: \(textRecord.string)"	
-            }			
+            }	
+            		
         }
     }
 
     // write func
+    // urlType can be email, sms, phone, facetime, shortcut, website
+    
     func write() {
 
         // prepare the NFCURIRecord from the URL
         var uriRecord: NFCURIRecord?
         if let url = URL(string: urlTextBox.text) {
-            uriRecord = NFCURIRecord(url: url)
+            uriRecord = NFCURIRecord(url: url, urlType: .email)
         }
         
         // prepare the NFCTextRecord from the String and Locale
