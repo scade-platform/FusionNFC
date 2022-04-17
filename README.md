@@ -5,7 +5,7 @@ Discuss
 -------
 Join our slack channel here for Fusion Package discussion [link](https://scadeio.slack.com/archives/C025WRG18TW)
 
-For native cross plaform development with Swift and geneel Fusion introduciton, go here [SCADE Fusion](beta.scade.io/fusion)
+For native cross plaform development with Swift and general Fusion introduction, go here [SCADE Fusion](https://docs.scade.io/docs/fusionintroduction)
 
 Install - Add to Package.swift
 ------------------------------
