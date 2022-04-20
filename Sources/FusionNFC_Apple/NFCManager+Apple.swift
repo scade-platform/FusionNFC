@@ -106,6 +106,7 @@ extension NFCManager: NFCManagerProtocol {
 	}
 }
 
+@available(iOS 13.0, *)
 extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
     // MARK: - NFCNDEFReaderSessionDelegate
     func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
@@ -121,6 +122,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         // when you provide `reader(_:didDetect:)`.
     }
     
+    @available(iOS 13.0, *)
     func readerSession(_ session: NFCNDEFReaderSession, didDetect tags: [NFCNDEFTag]) {
         if tags.count > 1 {
             session.alertMessage = "More than 1 tags found. Please present only 1 tag."
@@ -196,6 +198,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         }
     }
     
+    @available(iOS 13.0, *)
     func tagRemovalDetect(_ session: NFCNDEFReaderSession, _ tag: NFCNDEFTag) {
         // In the tag removal procedure, you connect to the tag and query for
         // its availability. You restart RF polling when the tag becomes
@@ -212,6 +215,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         }
     }
     
+    @available(iOS 13.0, *)
     func convert(ndefMessage: NFCNDEFMessage) -> NFCMessage {
         let urls: [URL] = ndefMessage.records.compactMap { (payload: NFCNDEFPayload) -> URL? in
             if let url = payload.wellKnownTypeURIPayload() {
