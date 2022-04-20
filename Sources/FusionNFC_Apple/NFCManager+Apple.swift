@@ -1,6 +1,7 @@
 import FusionNFC_Common
 import CoreNFC
 
+@available(iOS 13.0, *)
 public class NFCManager {
     fileprivate class NDEFDelegate: NSObject {
         typealias Receiver = (NFCMessage?) -> Void
@@ -19,6 +20,7 @@ public class NFCManager {
     }
 }
 
+@available(iOS 13.0, *)
 extension NFCManager: NFCManagerProtocol {
     public static var readingAvailable: Bool {
         NFCNDEFReaderSession.readingAvailable
@@ -65,6 +67,7 @@ extension NFCManager: NFCManagerProtocol {
         }
     }
     
+    @available(iOS 13.0, *)
     public func writeTag(_ message: NFCMessage) {
         guard let session = readerSession else {
             return
