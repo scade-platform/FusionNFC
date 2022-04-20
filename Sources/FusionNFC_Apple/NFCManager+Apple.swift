@@ -1,6 +1,7 @@
 import FusionNFC_Common
 import CoreNFC
 
+@available(iOS 13.0, *)
 public class NFCManager {
     fileprivate class NDEFDelegate: NSObject {
         typealias Receiver = (NFCMessage?) -> Void
@@ -19,6 +20,7 @@ public class NFCManager {
     }
 }
 
+@available(iOS 13.0, *)
 extension NFCManager: NFCManagerProtocol {
     public static var readingAvailable: Bool {
         NFCNDEFReaderSession.readingAvailable
@@ -65,6 +67,7 @@ extension NFCManager: NFCManagerProtocol {
         }
     }
     
+    @available(iOS 13.0, *)
     public func writeTag(_ message: NFCMessage) {
         guard let session = readerSession else {
             return
@@ -106,6 +109,7 @@ extension NFCManager: NFCManagerProtocol {
 	}
 }
 
+@available(iOS 13.0, *)
 extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
     // MARK: - NFCNDEFReaderSessionDelegate
     func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) {
@@ -121,6 +125,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         // when you provide `reader(_:didDetect:)`.
     }
     
+    @available(iOS 13.0, *)
     func readerSession(_ session: NFCNDEFReaderSession, didDetect tags: [NFCNDEFTag]) {
         if tags.count > 1 {
             session.alertMessage = "More than 1 tags found. Please present only 1 tag."
@@ -196,6 +201,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         }
     }
     
+    @available(iOS 13.0, *)
     func tagRemovalDetect(_ session: NFCNDEFReaderSession, _ tag: NFCNDEFTag) {
         // In the tag removal procedure, you connect to the tag and query for
         // its availability. You restart RF polling when the tag becomes
@@ -212,6 +218,7 @@ extension NFCManager.NDEFDelegate: NFCNDEFReaderSessionDelegate {
         }
     }
     
+    @available(iOS 13.0, *)
     func convert(ndefMessage: NFCNDEFMessage) -> NFCMessage {
         let urls: [URL] = ndefMessage.records.compactMap { (payload: NFCNDEFPayload) -> URL? in
             if let url = payload.wellKnownTypeURIPayload() {
