@@ -36,7 +36,10 @@ extension NFCManager: NFCManagerProtocol {
             self.delegate.usage = .read
             session.begin()
         } else {
-            session.invalidate(errorMessage: "This device doesn't support tag scanning.")
+	    if #available(iOS 13.0, *) {
+	    session.invalidate(errorMessage: "This device doesn't support tag scanning.")
+            
+	    }
             completion(nil)
         }
     }
@@ -96,12 +99,18 @@ extension NFCManager: NFCManagerProtocol {
             }
 
             if !payloads.isEmpty {
-                self.delegate.ndefMessage = NFCNDEFMessage(records: payloads)
+		    if #available(iOS 13.0, *) {
+	    self.delegate.ndefMessage = NFCNDEFMessage(records: payloads)
+	    }
+                
             }
             
             session.begin()
         } else {
-            session.invalidate(errorMessage: "This device doesn't support tag scanning.")
+            if #available(iOS 13.0, *) {
+	    session.invalidate(errorMessage: "This device doesn't support tag scanning.")
+            
+	    }
         }
     }
     
