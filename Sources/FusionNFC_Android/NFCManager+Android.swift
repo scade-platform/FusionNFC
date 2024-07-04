@@ -31,7 +31,7 @@ extension NFCManager: NFCManagerProtocol {
 		enableNfcForegroundDispatch()
     }
     
-    func getStandardURL(url: URL, urlType: URLType) -> URL? {
+    func getStandardURL(url: Foundation.URL, urlType: URLType) -> Foundation.URL? {
         switch urlType {
         case .website:
             return url
@@ -177,7 +177,7 @@ extension NFCReceiver {
 				uintArray.append(contentsOf: langBytes)
 				uintArray.append(contentsOf: textBytes)
 				let payload = uintArray.map { Int8(bitPattern: $0) }
-				let record = NdefRecord(tnf: NdefRecord.TNF_WELL_KNOWN, _type: NdefRecord.RTD_TEXT, id: [], payload: payload)
+				let record = NdefRecord(tnf: NdefRecord.TNF_WELL_KNOWN, type: NdefRecord.RTD_TEXT, id: [], payload: payload)
 				records.append(record)
 			}
 		}
@@ -273,7 +273,7 @@ extension NFCURIRecord {
     	return NFCURIRecord(url: url, urlType: NFCURIRecord.getURLType(url: url))
   	}
 
-  	static func getURLType(url: URL) -> URLType {
+  	static func getURLType(url: Foundation.URL) -> URLType {
     		let urlStr = url.absoluteString
 
   		  if urlStr.starts(with: "tel") {
